@@ -728,6 +728,13 @@ class Usage extends Common
                         }
                     }
 
+                    // If this is the primary data series and the chart is not a
+                    // thumbnail, use line markers if and only if the number of
+                    // y series data points is less than or equal to 30.
+                    if ($isPrimaryDataSeries && !$thumbnailRequested) {
+                        $meDataSeries['marker']['enabled'] = count($meDataSeries['dataLabels']['y']) <= 30;
+                    }
+
                     // If this is the primary data series, modify the data labels
                     // and don't specify the line style. Otherwise, just remove
                     // the data labels.
@@ -736,13 +743,6 @@ class Usage extends Common
                         unset($meDataSeries['dashStyle']);
                     } else {
                         unset($meDataSeries['dataLabels']);
-                    }
-
-                    // If this is the primary data series and the chart is not a
-                    // thumbnail, use line markers if and only if the number of
-                    // points is less than or equal to 30.
-                    if ($isPrimaryDataSeries && !$thumbnailRequested) {
-                        $meDataSeries['marker']['enabled'] = count($meDataSeries['data']) <= 30;
                     }
 
                     // If this is a trend line data series...
