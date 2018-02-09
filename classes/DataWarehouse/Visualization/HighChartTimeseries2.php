@@ -575,7 +575,7 @@ class HighChartTimeseries2 extends HighChart2
                         // count only datapoints having actual y values:
                         $values_count = count(array_filter($values, function ($value) {
                             return $value !== null;
-                        });
+                        }));
 
 
                         $isRemainder = $dataTruncated && ($yIndex === $numYAxisDataObjects - 1);
