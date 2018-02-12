@@ -536,6 +536,8 @@ class HighChartTimeseries2 extends HighChart2
                 // @refer HighChart2 line 866
 
                 $numYAxisDataObjects = count($yAxisDataObjectsArray);
+                $previousDataSeriesMarker = null;
+
                 foreach($yAxisDataObjectsArray as $yIndex => $yAxisDataObject)
                 {
                     if( $yAxisDataObject != null)
@@ -572,11 +574,22 @@ class HighChartTimeseries2 extends HighChart2
 
                         $values = $yAxisDataObject->getValues();
 
-                        // count only datapoints having actual y values:
-                        $values_count = count(array_filter($values, function ($value) {
-                            return $value !== null;
-                        }));
-
+                        // If no other data series in the plot has done so,
+                        // decide whether to show data point markers:
+                        if (isset($previousDataSeriesMarker)) {
+                            $showMarker = $previousDataSeriesMarker;
+                        } else {
+                            // Count only datapoints having actual, non-null y values:
+                            $values_count = count(array_filter($values, function ($value) {
+                                return $value !== null;
+                            }));
+                            // Display markers for scatter plots, or for non-thumbnail plots
+                            // with fewer than 21 points.
+                            $showMarker = $data_description->display_type == 'scatter' ||
+                                ($values_count < 21 &&
+                                $this->_width > \DataWarehouse\Visualization::$thumbnail_width);
+                            $previousDataSeriesMarker = $showMarker;
+                        }
 
                         $isRemainder = $dataTruncated && ($yIndex === $numYAxisDataObjects - 1);
 
@@ -726,7 +739,7 @@ class HighChartTimeseries2 extends HighChart2
                             //'innerSize' => min(100,(100.0/$totalSeries)*count($this->_chart['series'])).'%',
                             'connectNulls' => $data_description->display_type == 'line' || $data_description->display_type == 'spline',
                             'marker' => array(
-                                'enabled' =>$data_description->display_type == 'scatter' || ($values_count < 21 && $this->_width > \DataWarehouse\Visualization::$thumbnail_width),
+                                'enabled' => $showMarker,
                                 'lineWidth' => 1,
                                 'lineColor' => $lineColor,
                                 'radius' => $font_size/4 + 5

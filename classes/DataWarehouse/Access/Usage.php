@@ -693,6 +693,8 @@ class Usage extends Common
 
                 // For each data series...
                 $primaryDataSeriesRank = $usageOffset;
+                $previousDataSeriesMarker = null;
+
                 array_walk($meChart['series'], function (
                     &$meDataSeries,
                     $meDataSeriesIndex
@@ -706,7 +708,8 @@ class Usage extends Common
                     $usageGroupByObject,
                     $user,
                     &$primaryDataSeriesRank,
-                    $chartSortedByValue
+                    $chartSortedByValue,
+                    &$previousDataSeriesMarker
                 ) {
                     // Determine the type of this data series.
                     $isTrendLineSeries = \xd_utilities\string_begins_with($meDataSeries['name'], 'Trend Line: ');
@@ -728,13 +731,6 @@ class Usage extends Common
                         }
                     }
 
-                    // If this is the primary data series and the chart is not a
-                    // thumbnail, use line markers if and only if the number of
-                    // y series data points is less than or equal to 30.
-                    if ($isPrimaryDataSeries && !$thumbnailRequested) {
-                        $meDataSeries['marker']['enabled'] = count($meDataSeries['dataLabels']['y']) <= 30;
-                    }
-
                     // If this is the primary data series, modify the data labels
                     // and don't specify the line style. Otherwise, just remove
                     // the data labels.
@@ -743,6 +739,25 @@ class Usage extends Common
                         unset($meDataSeries['dashStyle']);
                     } else {
                         unset($meDataSeries['dataLabels']);
+                    }
+
+                    // If this is the primary data series and the chart is not a
+                    // thumbnail, use line markers if and only if the number of
+                    // y series data points is less than or equal to 30.
+                    // Also, if other data series are not using markers, don't use one here.
+                    if ($isPrimaryDataSeries && !$thumbnailRequested) {
+                        if (isset($previousDataSeriesMarker)) {
+                            $meDataSeries['marker']['enabled'] = $previousDataSeriesMarker;
+                        } else {
+                            $yValues = array();
+                            foreach ($meDataSeries['data'] as $value) {
+                                if (is_array($value) && $value['y'] !== null ) {
+                                    $yValues[] = $value['y'];
+                                }
+                            }
+                            $meDataSeries['marker']['enabled'] = count($yValues) <= 30;
+                            $previousDataSeriesMarker = $meDataSeries['marker']['enabled'];
+                        }
                     }
 
                     // If this is a trend line data series...
