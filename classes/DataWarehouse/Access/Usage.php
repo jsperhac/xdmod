@@ -743,21 +743,17 @@ class Usage extends Common
 
                     // If this is the primary data series and the chart is not a
                     // thumbnail, use line markers if and only if the number of
-                    // y series data points is less than or equal to 30.
-                    // Also, if other data series are not using markers, don't use one here.
+                    // data points is less than or equal to 30,
+                    // or if there's a single y series data point.
                     if ($isPrimaryDataSeries && !$thumbnailRequested) {
-                        if (isset($previousDataSeriesMarker)) {
-                            $meDataSeries['marker']['enabled'] = $previousDataSeriesMarker;
-                        } else {
-                            $yValues = array();
-                            foreach ($meDataSeries['data'] as $value) {
-                                if (is_array($value) && $value['y'] !== null ) {
-                                    $yValues[] = $value['y'];
-                                }
+                        $yValues = array();
+                        foreach ($meDataSeries['data'] as $value) {
+                            if (is_array($value) && $value['y'] !== null ) {
+                                $yValues[] = $value['y'];
                             }
-                            $meDataSeries['marker']['enabled'] = count($yValues) <= 30;
-                            $previousDataSeriesMarker = $meDataSeries['marker']['enabled'];
                         }
+                        $meDataSeries['marker']['enabled'] = (count($yValues) == 1 ||
+                                            count($meDataSeries['data']) <= 30);
                     }
 
                     // If this is a trend line data series...
