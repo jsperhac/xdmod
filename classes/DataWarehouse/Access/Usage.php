@@ -693,7 +693,6 @@ class Usage extends Common
 
                 // For each data series...
                 $primaryDataSeriesRank = $usageOffset;
-                $previousDataSeriesMarker = null;
 
                 array_walk($meChart['series'], function (
                     &$meDataSeries,
@@ -708,8 +707,7 @@ class Usage extends Common
                     $usageGroupByObject,
                     $user,
                     &$primaryDataSeriesRank,
-                    $chartSortedByValue,
-                    &$previousDataSeriesMarker
+                    $chartSortedByValue
                 ) {
                     // Determine the type of this data series.
                     $isTrendLineSeries = \xd_utilities\string_begins_with($meDataSeries['name'], 'Trend Line: ');

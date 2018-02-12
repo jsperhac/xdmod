@@ -536,7 +536,6 @@ class HighChartTimeseries2 extends HighChart2
                 // @refer HighChart2 line 866
 
                 $numYAxisDataObjects = count($yAxisDataObjectsArray);
-                $previousDataSeriesMarker = null;
 
                 foreach($yAxisDataObjectsArray as $yIndex => $yAxisDataObject)
                 {
@@ -573,24 +572,18 @@ class HighChartTimeseries2 extends HighChart2
                         }
 
                         $values = $yAxisDataObject->getValues();
-                        $values_count = count($values);
 
-                        // If no other data series in the plot has done so,
-                        // decide whether to show data point markers:
-                        //if (isset($previousDataSeriesMarker)) {
-                        //    $showMarker = $previousDataSeriesMarker;
-                        //} else {
-                            // Count datapoints having actual, non-null y values:
-                            $y_values_count = count(array_filter($values, function ($value) {
-                                return $value !== null;
-                            }));
-                            // Display markers for scatter plots, or for non-thumbnail plots
-                            // with fewer than 21 points, or with one y value.
-                            $showMarker = $data_description->display_type == 'scatter' ||
-                                ( ($y_values_count == 1 || $values_count < 21) &&
-                                $this->_width > \DataWarehouse\Visualization::$thumbnail_width);
-                            //$previousDataSeriesMarker = $showMarker;
-                        }
+                        // Decide whether to show data point markers:
+                        $values_count = count($values);
+                        // Count datapoints having actual, non-null y values:
+                        $y_values_count = count(array_filter($values, function ($value) {
+                            return $value !== null;
+                        }));
+                        // Display markers for scatter plots, or for non-thumbnail plots
+                        // with fewer than 21 points or with a single y value.
+                        $showMarker = $data_description->display_type == 'scatter' ||
+                            ( ($y_values_count == 1 || $values_count < 21) &&
+                            $this->_width > \DataWarehouse\Visualization::$thumbnail_width);
 
                         $isRemainder = $dataTruncated && ($yIndex === $numYAxisDataObjects - 1);
 
