@@ -1,6 +1,6 @@
 {
     "name": "xdmod",
-    "version": "8.1.0",
+    "version": "8.5.0",
     "release": "1.0",
     "files": {
         "include_paths": [
@@ -16,12 +16,27 @@
             "/phpcs.xml",
             "/setup",
             "/sonar-project.properties",
+            "/tests",
+            "/html/gui/lib/extjs/docs",
+            "/html/gui/lib/extjs/build",
+            "/html/gui/lib/extjs/pkgs",
+            "/html/gui/lib/extjs/test",
+            "/html/gui/lib/extjs/welcome",
+            "/html/gui/lib/highcharts/api",
+            "/html/gui/lib/highcharts/examples",
+            "/html/gui/lib/highcharts/gfx",
+            "/html/gui/lib/highcharts/graphics",
+            "/html/gui/lib/highcharts/index.htm",
+            "/html/unit_tests",
             "/user_manual_builder"
         ],
         "exclude_patterns": [
             "#/\\.#",
             "#xdmod-.*\\.rpm$#",
             "#xdmod-.*\\.tar\\.gz$#",
+            "#^\\/html\\/gui\\/lib\\/extjs\\/examples\\/[A-t,v-z].*#",
+            "#^\\/html\\/gui\\/lib\\/extjs\\/resources\\/images\\/[a,h-z].*#",
+            "#^\\/html\\/gui\\/lib\\/extjs\\/resources\\/.*\\.swf#",
             "#^\\/configuration\\/.+\\..+\\.template$#"
         ]
     },
@@ -63,7 +78,6 @@
             "configuration/organization.json",
             "configuration/portal_settings.ini",
             "configuration/portal_settings.d",
-            "configuration/processor_buckets.json",
             "configuration/rawstatistics.json",
             "configuration/rawstatistics.d",
             "configuration/resource_specs.json",
