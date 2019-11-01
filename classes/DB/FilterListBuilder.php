@@ -2,6 +2,7 @@
 
 use Log as Logger;  // CCR implementation of PEAR logger
 use CCR\DB;
+use CCR\Loggable;
 use CCR\DB\MySQLHelper;
 use CCR\Loggable;
 use DB\Exceptions\TableNotFoundException;

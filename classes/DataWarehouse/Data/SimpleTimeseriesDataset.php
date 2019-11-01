@@ -1,9 +1,5 @@
 <?php
 
-namespace DataWarehouse\Data;
-
-use CCR\DB;
-
 /**
  * This class represents a set of timeseries data columns
  *
