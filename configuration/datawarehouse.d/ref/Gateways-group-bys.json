@@ -27,87 +27,12 @@
         "description_html": "Acronym for the gateway from which the job was submitted.",
         "name": "Gateway Acronym"
     },
-    "application": {
-        "attribute_table": "application",
-        "attribute_table_schema": "modw",
-        "attribute_to_aggregate_table_key_map": [
-            {
-                "id": "gw_application_id"
-            }
-        ],
-        "attribute_values_query": {
-            "joins": [
-                {
-                    "name": "application"
-                }
-            ],
-            "records": {
-                "id": "id",
-                "name": "name",
-                "order_id": "id",
-                "short_name": "name"
-            }
-        },
-        "category": "Administrative",
-        "description_html": "The application run by the job.",
-        "name": "Application"
-    },
     "day": {
         "$ref": "datawarehouse.d/ref/group-by-time-period.json#/day"
     },
-    "enduser": {
-        "attribute_table": "gw_enduser",
-        "attribute_table_schema": "modw_gateways",
-        "attribute_to_aggregate_table_key_map": [
-            {
-                "id": "gw_enduser_id"
-            }
-        ],
-        "attribute_values_query": {
-            "joins": [
-                {
-                    "name": "gw_enduser"
-                }
-            ],
-            "records": {
-                "id": "id",
-                "name": "username",
-                "order_id": "id",
-                "short_name": "username"
-            }
-        },
-        "category": "Administrative",
-        "description_html": "The Gateway end user that submitted the job.",
-        "name": "Gateway Enduser"
-    },
-    "executable": {
-        "attribute_table": "executable",
-        "attribute_table_schema": "modw",
-        "attribute_to_aggregate_table_key_map": [
-            {
-                "id": "gw_executable_id"
-            }
-        ],
-        "attribute_values_query": {
-            "joins": [
-                {
-                    "name": "executable"
-                }
-            ],
-            "records": {
-                "id": "id",
-                "name": "exec",
-                "order_id": "id",
-                "short_name": "exec"
-            }
-        },
-        "category": "Administrative",
-        "description_html": "The executable run by the job.",
-        "name": "Executable"
-    },
     "fieldofscience": {
         "$ref": "datawarehouse.d/ref/group-by-hierarchy.json#/fieldofscience"
-   },
+    },
     "gateway": {
         "attribute_table": "gateway",
         "attribute_table_schema": "modw_gateways",
