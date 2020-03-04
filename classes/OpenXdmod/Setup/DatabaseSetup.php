@@ -149,6 +149,7 @@ EOT
             'staging-bootstrap',
             'hpcdb-bootstrap',
             'acls-xdmod-management'
+            'gateways.bootstrap',
         ), $logger);
 
 
