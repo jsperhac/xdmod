@@ -37,8 +37,8 @@
             "# order-matters": "Because of foreign key constraints",
             "definition_file_list": [
 		"gateways/modw_gateways.gateway.json",
-		"gateways/modw_gateways.gw_job_tasks.json",
-		"gateways/modw_gateways.gw_job_records.json"
+		"gateways/modw_gateways.job_tasks.json",
+		"gateways/modw_gateways.job_records.json"
             ]
         }
     ],
@@ -49,12 +49,12 @@
             "definition_file": "gateways/gateway.json"
 	},
 	{
-	    "name": "gw_job_tasks",
+	    "name": "job_tasks",
 	    "description": "Gateway job tasks",
             "definition_file": "gateways/job_tasks.json"
 	},
 	{
-	    "name": "gw_job_records",
+	    "name": "job_records",
 	    "description": "Gateway job records",
             "definition_file": "gateways/job_records.json"
 	}
@@ -67,7 +67,7 @@
                     "type": "mysql",
                     "name": "Job Record/Task database",
                     "config": "datawarehouse",
-                    "schema": "modw_aggregates"
+                    "schema": "modw_gateways"
                 },
                 "destination": {
                     "type": "mysql",
@@ -81,7 +81,7 @@
             "options_class": "AggregatorOptions",
             "class": "SimpleAggregator",
             "description": "Aggregate Gateway job records",
-            "definition_file": "gateways/gatewayfact_by_.json",
+            "definition_file": "jobs/hpc-aggregation.json",
             "table_prefix": "gatewayfact_by_",
             "aggregation_units": ["day", "month", "quarter", "year"]
         }

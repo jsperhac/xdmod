@@ -1,6 +1,6 @@
 {
   "table_definition": {
-    "comment": "Consumption of resources by Gateways",
+    "comment": "Consumption of resources (job records) by Gateways",
     "engine": "myisam",
     "charset": "utf8mb4",
     "collation": "utf8mb4_general_ci",
@@ -10,9 +10,9 @@
         "charset": null,
         "collation": null,
         "nullable": false,
-        "default": null,
+        "default": "0",
         "extra": null,
-        "comment": "Job record this task falls under",
+        "comment": null,
         "hints": null,
         "name": "job_record_id"
       },
@@ -21,33 +21,11 @@
         "charset": null,
         "collation": null,
         "nullable": false,
-        "default": "0",
-        "extra": null,
-        "comment": "Unique job_id",
-        "hints": null,
-        "name": "job_id"
-      },
-      {
-        "type": "bigint(20) unsigned",
-        "charset": null,
-        "collation": null,
-        "nullable": false,
         "default": null,
         "extra": null,
-        "comment": "Job_id from Origin",
+        "comment": null,
         "hints": null,
-        "name": "job_id_origin_id"
-      },
-      {
-        "type": "datetime",
-        "charset": null,
-        "collation": null,
-        "nullable": false,
-        "default": null,
-        "extra": null,
-        "comment": "Time that the data was originally recorded at the source",
-        "hints": null,
-        "name": "creation_time"
+        "name": "job_record_origin_id"
       },
       {
         "type": "int(11)",
@@ -56,40 +34,7 @@
         "nullable": false,
         "default": null,
         "extra": null,
-        "comment": "Job or vm instance identifier from resource manager",
-        "hints": null,
-        "name": "local_jobid"
-      },
-      {
-        "type": "int(11)",
-        "charset": null,
-        "collation": null,
-        "nullable": false,
-        "default": "-1",
-        "extra": null,
-        "comment": "Job Array index id",
-        "hints": null,
-        "name": "local_job_array_index"
-      },
-      {
-        "type": "int(11)",
-        "charset": null,
-        "collation": null,
-        "nullable": true,
-        "default": null,
-        "extra": null,
-        "comment": "Resource where the task executed",
-        "hints": null,
-        "name": "local_job_id_raw"
-      },
-      {
-        "type": "int(11)",
-        "charset": null,
-        "collation": null,
-        "nullable": false,
-        "default": null,
-        "extra": null,
-        "comment": "Resource where the task executed",
+        "comment": "Resource where the job was initiated",
         "hints": null,
         "name": "resource_id"
       },
@@ -100,9 +45,9 @@
         "nullable": false,
         "default": null,
         "extra": null,
-        "comment": "DIMENSION: The id of the resource system account (local username) under which the job ran. References systemaccount.id",
+        "comment": "The type of the resource on which the jobs ran. References the resourcetype.id",
         "hints": null,
-        "name": "systemaccount_id"
+        "name": "resourcetype_id"
       },
       {
         "type": "int(11)",
@@ -111,7 +56,62 @@
         "nullable": false,
         "default": null,
         "extra": null,
-        "comment": "Person executing this task",
+        "comment": "The state where the resource resides",
+        "hints": null,
+        "name": "resource_state_id"
+      },
+      {
+        "type": "int(11)",
+        "charset": null,
+        "collation": null,
+        "nullable": false,
+        "default": null,
+        "extra": null,
+        "comment": "The country where the resource resides",
+        "hints": null,
+        "name": "resource_country_id"
+      },
+      {
+        "type": "int(11)",
+        "charset": null,
+        "collation": null,
+        "nullable": false,
+        "default": null,
+        "extra": null,
+        "comment": "The organization where the resource resides",
+        "hints": null,
+        "name": "resource_organization_id"
+      },
+      {
+        "type": "int(11)",
+        "charset": null,
+        "collation": null,
+        "nullable": false,
+        "default": null,
+        "extra": null,
+        "comment": "The type of organization where the resource resides",
+        "hints": null,
+        "name": "resource_organization_type_id"
+      },
+      {
+        "type": "int(11)",
+        "charset": null,
+        "collation": null,
+        "nullable": false,
+        "default": null,
+        "extra": null,
+        "comment": "Resource associated with the allocation. May be a grid resource.",
+        "hints": null,
+        "name": "allocation_resource_id"
+      },
+      {
+        "type": "int(11)",
+        "charset": null,
+        "collation": null,
+        "nullable": false,
+        "default": null,
+        "extra": null,
+        "comment": "Person requesting resources",
         "hints": null,
         "name": "person_id"
       },
@@ -122,7 +122,7 @@
         "nullable": false,
         "default": null,
         "extra": null,
-        "comment": "The organization of the person who ran the task",
+        "comment": "The organization of the person requesting resources",
         "hints": null,
         "name": "person_organization_id"
       },
@@ -133,7 +133,7 @@
         "nullable": false,
         "default": null,
         "extra": null,
-        "comment": "The NSF status code of the person who ran the task",
+        "comment": "The NSF status code of the person requesting resources. References person.nsfstatuscode_id",
         "hints": null,
         "name": "person_nsfstatuscode_id"
       },
@@ -144,20 +144,9 @@
         "nullable": false,
         "default": null,
         "extra": null,
-        "comment": "Task type or event",
+        "comment": "Account the job will be charged to",
         "hints": null,
-        "name": "job_task_type_id"
-      },
-      {
-        "type": "varchar(256)",
-        "charset": "latin1",
-        "collation": "latin1_swedish_ci",
-        "nullable": true,
-        "default": null,
-        "extra": null,
-        "comment": "User-specified job name",
-        "hints": null,
-        "name": "name"
+        "name": "account_id"
       },
       {
         "type": "int(11)",
@@ -166,7 +155,95 @@
         "nullable": false,
         "default": null,
         "extra": null,
-        "comment": "Task submission time in seconds since epoch (UTC)",
+        "comment": "Allocation (resource, account) that will be charged for this job",
+        "hints": null,
+        "name": "allocation_id"
+      },
+      {
+        "type": "int(11)",
+        "charset": null,
+        "collation": null,
+        "nullable": false,
+        "default": null,
+        "extra": null,
+        "comment": "Request record for this allocation (used for primary field of science)",
+        "hints": null,
+        "name": "request_id"
+      },
+      {
+        "type": "int(11)",
+        "charset": null,
+        "collation": null,
+        "nullable": false,
+        "default": null,
+        "extra": null,
+        "comment": "The field of science of the project to which the jobs belong",
+        "hints": null,
+        "name": "fos_id"
+      },
+      {
+        "type": "int(11)",
+        "charset": null,
+        "collation": null,
+        "nullable": false,
+        "default": null,
+        "extra": null,
+        "comment": "The PI that owns the allocation. XDMoD adds this on ingest, otherwise it is linked to a request in XDCDB. References principalinvestigator.person_id",
+        "hints": null,
+        "name": "principalinvestigator_person_id"
+      },
+      {
+        "type": "int(11)",
+        "charset": null,
+        "collation": null,
+        "nullable": false,
+        "default": null,
+        "extra": null,
+        "comment": "The organization of the PI that owns the allocation. References piperson.organization_id",
+        "hints": null,
+        "name": "piperson_organization_id"
+      },
+      {
+        "type": "int(11)",
+        "charset": null,
+        "collation": null,
+        "nullable": false,
+        "default": null,
+        "extra": null,
+        "comment": "Type of job: hpc, cloud, hpc-reservation, ...",
+        "hints": null,
+        "name": "job_record_type_id"
+      },
+      {
+        "type": "int(11)",
+        "charset": null,
+        "collation": null,
+        "nullable": false,
+        "default": null,
+        "extra": null,
+        "comment": "Method used to submit this job: cli, gateway, ...",
+        "hints": null,
+        "name": "submission_venue_id"
+      },
+      {
+        "type": "varchar(32)",
+        "charset": "latin1",
+        "collation": "latin1_swedish_ci",
+        "nullable": true,
+        "default": null,
+        "extra": null,
+        "comment": "Resource queue where the job ran",
+        "hints": null,
+        "name": "queue"
+      },
+      {
+        "type": "int(11)",
+        "charset": null,
+        "collation": null,
+        "nullable": true,
+        "default": null,
+        "extra": null,
+        "comment": "Job submission time in seconds since epoch (UTC)",
         "hints": null,
         "name": "submit_time_ts"
       },
@@ -177,20 +254,9 @@
         "nullable": false,
         "default": null,
         "extra": null,
-        "comment": "Task start time in seconds since epoch (UTC)",
+        "comment": "Job start time in seconds since epoch (UTC)",
         "hints": null,
         "name": "start_time_ts"
-      },
-      {
-        "type": "int(11)",
-        "charset": null,
-        "collation": null,
-        "nullable": false,
-        "default": null,
-        "extra": null,
-        "comment": "Task completion time in seconds since epoch (UTC)",
-        "hints": null,
-        "name": "end_time_ts"
       },
       {
         "type": "int(11)",
@@ -199,9 +265,9 @@
         "nullable": true,
         "default": null,
         "extra": null,
-        "comment": "The eligible time in Unix time.",
+        "comment": "Job completion time in seconds since epoch (UTC), may be unknown",
         "hints": null,
-        "name": "eligible_time_ts"
+        "name": "end_time_ts"
       },
       {
         "type": "int(10) unsigned",
@@ -224,83 +290,6 @@
         "comment": "Day id of the job end time in format YYYY00DDD, e.g. 201600143. This is the day in the timezone of the LOCAL database and NOT UTC!",
         "hints": null,
         "name": "end_day_id"
-      },
-      {
-        "type": "int(10) unsigned",
-        "charset": null,
-        "collation": null,
-        "nullable": false,
-        "default": null,
-        "extra": null,
-        "comment": "Day id of the job eligible time in format YYYY00DDD, e.g. 201600143. This is the day in the timezone of the LOCAL database and NOT UTC!",
-        "hints": null,
-        "name": "eligible_day_id"
-      },
-      {
-        "type": "int(11)",
-        "charset": null,
-        "collation": null,
-        "nullable": false,
-        "default": "-1",
-        "extra": null,
-        "comment": "Number of nodes consumed",
-        "hints": null,
-        "name": "node_count"
-      },
-      {
-        "type": "int(11)",
-        "charset": null,
-        "collation": null,
-        "nullable": false,
-        "default": "-1",
-        "extra": null,
-        "comment": "Number of processor cores consumed",
-        "hints": null,
-        "name": "processor_count"
-      },
-      {
-        "type": "int(11)",
-        "charset": null,
-        "collation": null,
-        "nullable": false,
-        "default": "-1",
-        "extra": null,
-        "comment": "Memory consumed",
-        "hints": null,
-        "name": "memory_kb"
-      },
-      {
-        "type": "int(11)",
-        "charset": null,
-        "collation": null,
-        "nullable": false,
-        "default": null,
-        "extra": null,
-        "comment": "Overall job duration in seconds",
-        "hints": null,
-        "name": "wallduration"
-      },
-      {
-        "type": "int(11)",
-        "charset": null,
-        "collation": null,
-        "nullable": false,
-        "default": null,
-        "extra": null,
-        "comment": "Time the job waited in the queue",
-        "hints": null,
-        "name": "waitduration"
-      },
-      {
-        "type": "decimal(18,0)",
-        "charset": null,
-        "collation": null,
-        "nullable": false,
-        "default": null,
-        "extra": null,
-        "comment": "The amount of the cpu time (processor_count * wallduration)",
-        "hints": null,
-        "name": "cpu_time"
       },
       {
         "type": "decimal(18,3)",
@@ -364,97 +353,9 @@
         "nullable": true,
         "default": null,
         "extra": null,
-        "comment": "NUs charged after SP adjustments. XDSU & 21.576",
+        "comment": "NUs charged after SP adjustments. XDSU * 21.576",
         "hints": null,
         "name": "adjusted_charge_nu"
-      },
-      {
-        "type": "varchar(255)",
-        "charset": "latin1",
-        "collation": "latin1_swedish_ci",
-        "nullable": true,
-        "default": null,
-        "extra": null,
-        "comment": "The name of the group that ran the job.",
-        "hints": null,
-        "name": "group_name"
-      },
-      {
-        "type": "int(10) unsigned",
-        "charset": null,
-        "collation": null,
-        "nullable": true,
-        "default": null,
-        "extra": null,
-        "comment": "The GID of the group that ran the job.",
-        "hints": null,
-        "name": "gid_number"
-      },
-      {
-        "type": "int(10) unsigned",
-        "charset": null,
-        "collation": null,
-        "nullable": true,
-        "default": null,
-        "extra": null,
-        "comment": "The UID of the user that ran the job.",
-        "hints": null,
-        "name": "uid_number"
-      },
-      {
-        "type": "varchar(32)",
-        "charset": "latin1",
-        "collation": "latin1_swedish_ci",
-        "nullable": true,
-        "default": null,
-        "extra": null,
-        "comment": "The code that the job exited with.",
-        "hints": null,
-        "name": "exit_code"
-      },
-      {
-        "type": "varchar(32)",
-        "charset": "latin1",
-        "collation": "latin1_swedish_ci",
-        "nullable": true,
-        "default": null,
-        "extra": null,
-        "comment": "The state of the job when it completed.",
-        "hints": null,
-        "name": "exit_state"
-      },
-      {
-        "type": "int(10) unsigned",
-        "charset": null,
-        "collation": null,
-        "nullable": true,
-        "default": null,
-        "extra": null,
-        "comment": "The number of CPUs required by the job.",
-        "hints": null,
-        "name": "cpu_req"
-      },
-      {
-        "type": "varchar(32)",
-        "charset": "latin1",
-        "collation": "latin1_swedish_ci",
-        "nullable": true,
-        "default": null,
-        "extra": null,
-        "comment": "The amount of memory required by the job.",
-        "hints": null,
-        "name": "mem_req"
-      },
-      {
-        "type": "int(10) unsigned",
-        "charset": null,
-        "collation": null,
-        "nullable": true,
-        "default": null,
-        "extra": null,
-        "comment": "The time limit of the job in seconds.",
-        "hints": null,
-        "name": "timelimit"
       },
       {
         "type": "double",
@@ -479,6 +380,17 @@
         "name": "completed"
       },
       {
+        "type": "int(11)",
+        "charset": null,
+        "collation": null,
+        "nullable": false,
+        "default": "0",
+        "extra": null,
+        "comment": null,
+        "hints": null,
+        "name": "federation_instance_id"
+      },
+      {
         "type": "timestamp",
         "charset": null,
         "collation": null,
@@ -501,20 +413,10 @@
         "name": "is_deleted"
       }
     ],
-    "indexes": [
-        {
-            "name": "PRIMARY",
-            "columns": [
-                "job_id",
-                "creation_time"
-            ],
-            "type": "BTREE",
-            "is_unique": true
-        }
-    ],
+    "indexes": [],
     "foreign_key_constraints": [],
     "triggers": [],
     "schema": "modw_gateways",
-    "name": "gw_job_tasks"
+    "name": "job_records"
   }
 }
