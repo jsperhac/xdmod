@@ -37,11 +37,8 @@
             "# order-matters": "Because of foreign key constraints",
             "definition_file_list": [
 		"gateways/modw_gateways.gateway.json",
-		"gateways/modw_gateways.gatewayfact_by_day.json",
-		"gateways/modw_gateways.gatewayfact_by_month.json",
-		"gateways/modw_gateways.gatewayfact_by_quarter.json",
-		"gateways/modw_gateways.gatewayfact_by_year.json",
-		"gateways/modw_gateways.gw_job_tasks.json"
+		"gateways/modw_gateways.gw_job_tasks.json",
+		"gateways/modw_gateways.gw_job_records.json"
             ]
         }
     ],
@@ -57,24 +54,36 @@
             "definition_file": "gateways/job_tasks.json"
 	},
 	{
-	    "name": "gatewayfact_by_day",
-	    "description": "Gateway job facts by day",
-            "definition_file": "gateways/jobfact_by_day.json"
-	},
-	{
-	    "name": "gatewayfact_by_month",
-	    "description": "Gateway job facts by month",
-            "definition_file": "gateways/jobfact_by_month.json"
-	},
-	{
-	    "name": "gatewayfact_by_quarter",
-	    "description": "Gateway job facts by quarter",
-            "definition_file": "gateways/jobfact_by_quarter.json"
-	},
-	{
-	    "name": "gatewayfact_by_year",
-	    "description": "Gateway job facts by year",
-            "definition_file": "gateways/jobfact_by_year.json"
+	    "name": "gw_job_records",
+	    "description": "Gateway job records",
+            "definition_file": "gateways/job_records.json"
 	}
+    ],
+    "aggregate": [
+         {
+            "name": "aggregate",
+            "endpoints": {
+                "source": {
+                    "type": "mysql",
+                    "name": "Job Record/Task database",
+                    "config": "datawarehouse",
+                    "schema": "modw_aggregates"
+                },
+                "destination": {
+                    "type": "mysql",
+                    "name": "Aggregates Database",
+                    "config": "datawarehouse",
+                    "schema": "modw_gateways",
+                    "create_schema_if_not_exists": true
+                }
+            },
+            "namespace": "ETL\\Aggregator",
+            "options_class": "AggregatorOptions",
+            "class": "SimpleAggregator",
+            "description": "Aggregate Gateway job records",
+            "definition_file": "gateways/gatewayfact_by_.json",
+            "table_prefix": "gatewayfact_by_",
+            "aggregation_units": ["day", "month", "quarter", "year"]
+        }
     ]
 }

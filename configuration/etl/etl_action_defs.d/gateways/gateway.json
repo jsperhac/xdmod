@@ -17,7 +17,7 @@
             }
         ],
         "where": [
-            "p.last_name = 'Bunting'"
+            "p.last_name = '${community-user}'"
         ]
     }
 }
