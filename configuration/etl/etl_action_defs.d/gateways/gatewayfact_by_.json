@@ -14,8 +14,8 @@
             }
         ],
         "records": {
-            "#job_id_list": "job_id_list",
-            "#last_modified": "last_modified",
+            "job_id_list": "job_id_list",
+            "last_modified": "last_modified",
             "${AGGREGATION_UNIT}": "${AGGREGATION_UNIT}",
             "${AGGREGATION_UNIT}_id": "${AGGREGATION_UNIT}_id",
             "account_id": "account_id",
