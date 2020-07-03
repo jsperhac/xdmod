@@ -15,7 +15,7 @@
         ],
         "records": {
             "#job_id_list": "job_id_list",
-            "last_modified": "last_modified",
+            "#last_modified": "last_modified",
             "${AGGREGATION_UNIT}": "${AGGREGATION_UNIT}",
             "${AGGREGATION_UNIT}_id": "${AGGREGATION_UNIT}_id",
             "account_id": "account_id",
@@ -69,10 +69,7 @@
             "waitduration": "waitduration",
             "wallduration": "wallduration",
             "year": "year"
-        },
-        "where": [
-                "jf.last_modified > '${min-last-modified}'"
-        ]
+        }
     },
     "table_definition": {
         "$ref": "${table_definition_dir}/jobs/xdw/jobfact_by_.json#/table_definition"
