@@ -14,6 +14,9 @@
             }
         ],
         "records": {
+            "id": "id",
+            "job_id_list": "job_id_list",
+            "last_modified": "last_modified",
             "${AGGREGATION_UNIT}": "${AGGREGATION_UNIT}",
             "${AGGREGATION_UNIT}_id": "${AGGREGATION_UNIT}_id",
             "account_id": "account_id",
@@ -70,6 +73,6 @@
         }
     },
     "table_definition": {
-        "$ref": "${table_definition_dir}/jobs/xdw/jobfact_by_.json#/table_definition"
+        "$ref": "${table_definition_dir}/jobs/xdw/jobfact_by_day.json#/table_definition"
     }
 }

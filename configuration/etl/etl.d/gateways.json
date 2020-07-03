@@ -38,7 +38,8 @@
             "definition_file_list": [
                 "gateways/modw_gateways.gateway.json",
                 "gateways/modw_gateways.enduser.json",
-                "gateways/modw_gateways.job_metadata.json"
+                "gateways/modw_gateways.job_metadata.json",
+                "gateways/modw_gateways.gatewayfact_by_day_joblist.json"
             ]
         }
     ],
